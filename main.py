@@ -1,6 +1,12 @@
 from split_audio import split_audio
+from separate_video_audio_subs import separate_video_audio_subs
 
-split_audio("Audio.mp3")
+separate_video_audio_subs("Input/Fragment_eng.mkv")
+
+
+#split_audio("Audio.mp3")
+
+
 
 
 # get_video()

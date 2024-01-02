@@ -2,3 +2,4 @@ pip install audio-separator
 
 pip install insanely-fast-whisper
 pip install lightning_fabric
+pip install moviepy pysubs2
