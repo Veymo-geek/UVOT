@@ -18,5 +18,16 @@ def split_audio(file_name):
     output_files = separator.separate()
     print("Output files:", output_files)
 
+# get_video()
+# separate_video_audio_subs()
+# transcribe_audio()
+# normaliaze_subs()
+# translate_text()
+# speech_synthesis()
+# combine_speech()
+# split_audio()
+# combine_audio()
+# combine_video()
+
 # Split the specified audio file
 split_audio("Audio.mp3")
