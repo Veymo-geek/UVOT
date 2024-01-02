@@ -3,3 +3,4 @@ splited_video/
 transcribe_audio.py
 Output/
 Input/
+__pycache__
