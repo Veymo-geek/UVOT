@@ -3,3 +3,5 @@ pip install audio-separator
 pip install insanely-fast-whisper
 pip install lightning_fabric
 pip install moviepy pysubs2
+pip install pydub
+pip install git+https://github.com/robinhad/ukrainian-tts.git

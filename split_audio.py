@@ -5,14 +5,14 @@ files_folder = "Temp_files/"
 
 def split_audio(file_name):
     file_path = files_folder + file_name
-    instrumental_output = files_folder + "Instrumental.flac"
-    vocal_output = files_folder + "Vocal.flac"
+    instrumental_output = files_folder + "Instrumental.wav"
+    vocal_output = files_folder + "Vocal.wav"
 
     separator = Separator(
         audio_file_path=file_path,
         primary_stem_path=instrumental_output,
         secondary_stem_path=vocal_output,
-        output_format="FLAC"
+        output_format="WAV"
     )
 
     output_files = separator.separate()
