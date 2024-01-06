@@ -1,12 +1,10 @@
 import os
 from audio_separator.separator.separator import Separator
 
-files_folder = "Temp_files/"
-
 def split_audio(file_name):
-    file_path = files_folder + file_name
-    instrumental_output = files_folder + "Instrumental.wav"
-    vocal_output = files_folder + "Vocal.wav"
+    file_path = file_name
+    instrumental_output = "Temp_files/Instrumental.wav"
+    vocal_output = "Temp_files/Vocal.wav"
 
     separator = Separator(
         audio_file_path=file_path,

@@ -23,7 +23,7 @@ def combine_all(result_name):
     command = [
         'ffmpeg', '-i', 'Input/Video.mkv',
         '-i', 'Temp_files/result_audio.aac', '-map', '0:v', '-map', '1:a',
-        '-c:v', 'copy', '-c:a', 'aac', 'Output/result.mkv'
+        '-c:v', 'copy', '-c:a', 'aac', result_name
     ]
     subprocess.run(command, check=True)
 

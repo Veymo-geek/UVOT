@@ -5,11 +5,12 @@ from pydub import silence
 import os
 import re
 
-tts = TTS(device="cpu") # can try gpu, mps
+
 # subtitles_file = "Temp_files/ukr_orig.srt" #@param {type:"string"}
 
 
 def synthesize_audio(text, output_filename):
+    tts = TTS(device="cpu") # can try gpu, mps
     with open(output_filename, mode="wb") as file:
         _, _ = tts.tts(text, Voices.Dmytro.value, Stress.Dictionary.value, file)
 

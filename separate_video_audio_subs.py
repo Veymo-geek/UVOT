@@ -1,47 +1,44 @@
-import subprocess
-import os
-import re
+import ffmpeg
 
 def separate_video_audio_subs(input_file):
-    # Check if the file exists
-    if not os.path.exists(input_file):
-        print(f"File {input_file} does not exist.")
+    # Analyze the input file
+    try:
+        probe = ffmpeg.probe(input_file)
+    except ffmpeg.Error as e:
+        print('Error:', e.stderr)
         return
 
-    # Create a directory for the split files
-    output_dir = "splited_video"
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    for stream in probe['streams']:
+        # Check if the stream is audio and in English
+        if stream['codec_type'] == 'audio' and stream['tags'].get('language') == 'eng':
+            ffmpeg.input(input_file).output('splited_video/ENG_Audio.wav', map=f"0:{stream['index']}").run(overwrite_output=True)
 
-    # Extract the base name for the output files
-    base_name = os.path.splitext(os.path.basename(input_file))[0]
-    output_path = os.path.join(output_dir, base_name)
+        # Check if the stream is audio and in Ukrainian
+        elif stream['codec_type'] == 'audio' and stream['tags'].get('language') == 'ukr':
+            ffmpeg.input(input_file).output('splited_video/UKR_Audio.wav', map=f"0:{stream['index']}").run(overwrite_output=True)
 
-    # Function to extract metadata
-    def extract_metadata():
-        cmd = f"ffmpeg -i {input_file}"
-        result = subprocess.run(cmd, shell=True, text=True, stderr=subprocess.PIPE)
-        return result.stderr
+        # Check if the stream is a subtitle and in English or Ukrainian
+        elif stream['codec_type'] == 'subtitle':
+            lang = stream['tags'].get('language')
+            if lang in ['eng', 'ukr']:
+                # Determine subtitle format
+                sub_format = stream.get('codec_name', 'srt')
+                sub_extension = {
+                    'subrip': 'srt', 
+                    'ass': 'ass', 
+                    'ssa': 'ssa', 
+                    'vobsub': 'sub', 
+                    'mov_text': 'txt', 
+                    # Add more mappings as needed
+                }.get(sub_format, 'srt')
 
-    # Parse metadata to find audio and subtitle tracks
-    metadata = extract_metadata()
-    audio_tracks = re.findall(r"Stream #.*?Audio:.*?([a-z]{2,})", metadata)
-    subtitle_tracks = re.findall(r"Stream #.*?Subtitle:.*?([a-z]{2,})", metadata)
+                output_filename = f"splited_video/{lang.upper()}_Subs.{sub_extension}"
+                ffmpeg.input(input_file).output(output_filename, map=f"0:{stream['index']}").run(overwrite_output=True)
 
-    try:
-        # Extract audio tracks
-        for i, lang in enumerate(audio_tracks):
-            audio_command = f"ffmpeg -i {input_file} -map 0:a:{i} -c copy {output_path}_audio_{i}_{lang}.aac"
-            subprocess.call(audio_command, shell=True)
+# Example usage
 
-        # Extract subtitle tracks
-        for i, lang in enumerate(subtitle_tracks):
-            subtitle_command = f"ffmpeg -i {input_file} -map 0:s:{i} {output_path}_subtitles_{i}_{lang}.srt"
-            subprocess.call(subtitle_command, shell=True)
+# separate_video_audio_subs('Input/Video-to-Translate.mkv')
 
-        print("Extraction completed successfully.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
 
 # Example usage
 # separate_video_audio_subs("Input/Fragment_eng.mkv")
