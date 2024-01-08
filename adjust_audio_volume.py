@@ -1,6 +1,6 @@
 from pydub import AudioSegment
 
-def combine_audio(audio_path, vocals_path):
+def adjust_audio_volume(audio_path, vocals_path):
     audio = AudioSegment.from_wav(audio_path)
     vocals_audio = AudioSegment.from_wav(vocals_path)
 
@@ -33,10 +33,6 @@ def combine_audio(audio_path, vocals_path):
                     silent_ranges.append((start_silence, end_silence))
                 start_silence = None
 
-    # # Виведемо проміжки тиші у форматі HH:MM:SS,MS
-    # for start, end in silent_ranges:
-    #     print(f"Тиша з {ms_to_hms(start)} до {ms_to_hms(end)}")
-
     # Збільшення гучності на 12 ДБ у проміжках тиші зі зміщенням на 200 мілісекунд
     increase_in_db = 12
     offset = 200  # зміщення в мілісекундах
@@ -55,10 +51,4 @@ def combine_audio(audio_path, vocals_path):
     vocals_audio.export(output_path, format="wav")
 
 
-# # Перетворюємо проміжки тиші з мілісекунд на формат HH:MM:SS,MS
-# def ms_to_hms(ms):
-#     s, ms = divmod(ms, 1000)
-#     m, s = divmod(s, 60)
-#     h, m = divmod(m, 60)
-#     return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
 
