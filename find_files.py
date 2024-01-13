@@ -12,4 +12,4 @@ def find_file(file_name):
 
     return None  # Повертаємо None, якщо файл не було знайдено
 
-eng_subs = find_file("ENG_Subs")
+# eng_subs = find_file("ENG_Subs")

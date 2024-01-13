@@ -20,7 +20,6 @@ start_time_full = time.time()
 
 separate_video_audio_subs(input_video)
 
-
 if find_file("ENG_Subs") == None :
     transcribe_audio("splited_video/ENG_Audio.wav")
 

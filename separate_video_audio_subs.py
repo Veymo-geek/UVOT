@@ -51,6 +51,3 @@ def separate_video_audio_subs(input_file):
     if largest_ukr_sub:
         output_filename = f"splited_video/UKR_Subs.{sub_extension}"
         ffmpeg.input(input_file).output(output_filename, map=f"0:{largest_ukr_sub['index']}").run(overwrite_output=True)
-
-
-separate_video_audio_subs('Input/[JySzE] Naruto Shippuden - 001 [v2] - ukr.mkv')
