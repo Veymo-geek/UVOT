@@ -8,6 +8,9 @@ def separate_video_audio_subs(input_file):
         print('Error:', e.stderr)
         return
 
+    largest_eng_sub = None
+    largest_ukr_sub = None
+
     for stream in probe['streams']:
         # Check if the stream is audio and in English
         if stream['codec_type'] == 'audio' and stream['tags'].get('language') == 'eng':
@@ -26,19 +29,28 @@ def separate_video_audio_subs(input_file):
                 sub_extension = {
                     'subrip': 'srt', 
                     'ass': 'ass', 
-                    'ssa': 'ssa', 
-                    'vobsub': 'sub', 
-                    'mov_text': 'txt', 
                     # Add more mappings as needed
-                }.get(sub_format, 'srt')
+                }.get(sub_format, 'ass')
 
                 output_filename = f"splited_video/{lang.upper()}_Subs.{sub_extension}"
-                ffmpeg.input(input_file).output(output_filename, map=f"0:{stream['index']}").run(overwrite_output=True)
 
-# Example usage
+                # Check if it's the largest subtitle so far
+                if lang == 'eng':
+                    if largest_eng_sub is None or stream.get('NUMBER_OF_FRAMES', 0) > largest_eng_sub.get('NUMBER_OF_FRAMES', 0):
+                        largest_eng_sub = stream
+                elif lang == 'ukr':
+                    if largest_ukr_sub is None or stream.get('NUMBER_OF_FRAMES', 0) > largest_ukr_sub.get('NUMBER_OF_FRAMES', 0):
+                        largest_ukr_sub = stream
 
-# separate_video_audio_subs('Input/Video-to-Translate.mkv')
+    # After processing all streams, save the largest English subtitle file
+    if largest_eng_sub:
+        output_filename = f"splited_video/ENG_Subs.{sub_extension}"
+        ffmpeg.input(input_file).output(output_filename, map=f"0:{largest_eng_sub['index']}").run(overwrite_output=True)
+
+    # After processing all streams, save the largest Ukrainian subtitle file
+    if largest_ukr_sub:
+        output_filename = f"splited_video/UKR_Subs.{sub_extension}"
+        ffmpeg.input(input_file).output(output_filename, map=f"0:{largest_ukr_sub['index']}").run(overwrite_output=True)
 
 
-# Example usage
-# separate_video_audio_subs("Input/Fragment_eng.mkv")
+separate_video_audio_subs('Input/[JySzE] Naruto Shippuden - 001 [v2] - ukr.mkv')

@@ -1,22 +1,30 @@
 from split_audio import split_audio, convert_to_2_channels, split_6ch_audio
 from normalize_subs import normalize_subs
 from separate_video_audio_subs import separate_video_audio_subs
-from tts import generate_audio_fragments, combine_audio_fragments
+from tts import generate_audio_fragments, combine_audio_fragments, speed_up_audio_in_folder
 from combine_all import combine_all, combine_6ch_audio, combine_2ch_audio, make_3ch
 from adjust_audio_volume import adjust_audio_volume
 from translate_text import translate_text
 from pydub import AudioSegment
 from delete_files import delete_temp_files
+from find_files import find_file
+from transcribe_audio import transcribe_audio
+
 import time
 
-input_video = "Input/Naruto.mkv"
+input_video = "Input/Video-to-Translate.mkv"
 
 
 start_time = time.time()
 start_time_full = time.time()
 
 separate_video_audio_subs(input_video)
-normalize_subs("splited_video/ENG_Subs.ass")
+
+
+if find_file("ENG_Subs") == None :
+    transcribe_audio("splited_video/ENG_Audio.wav")
+
+normalize_subs(find_file("ENG_Subs"))
 translate_text("Temp_files/norm_subs.srt")
 
 elapsed_time_1 = time.time() - start_time
@@ -39,6 +47,7 @@ elapsed_time_2 = time.time() - start_time
 start_time = time.time()
 
 generate_audio_fragments("Temp_files/subs_uk.srt")
+speed_up_audio_in_folder("audios", 15)
 combine_audio_fragments("Temp_files/subs_uk.srt")
 adjust_audio_volume("Temp_files/combined_audio.wav","Temp_files/Vocal.wav")
 
@@ -63,12 +72,17 @@ print(f"speech creation time: {elapsed_time_3} seconds")
 print(f"Final stage time: {elapsed_time_4} seconds")
 print(f"Full time: {elapsed_time_full} seconds")
 
-delete_temp_files()
+# delete_temp_files()
 
 
-
-# прискорити мову
+# оптимальний спосіб розподілення аудіо +
+# прискорити мову +
+# приймати будь-який формат субтитрів +
 # переклад з Deepl
-# транскрибація transcribe_audio()
+# транскрибація transcribe_audio() +
+# щоб не завжди транскрибувало +
 # відео з різних джерел get_video()
 # перевірити формати при рендері
+
+# побажання: Синтез голосами оригіналу
+# Для цього що треба субтитри всюди на ass змінити

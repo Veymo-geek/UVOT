@@ -6,6 +6,7 @@ import os
 import re
 
 
+
 # subtitles_file = "Temp_files/ukr_orig.srt" #@param {type:"string"}
 tts = TTS(device="cpu") # can try gpu, mps
 
@@ -71,19 +72,28 @@ def combine_audio_fragments(subtitles_file):
     combined_audio = combine_audio_files(phrases)
     combined_audio.export("Temp_files/combined_audio.wav", format="wav")
 
-# def main():
-#     phrases = split_subtitles_into_phrases(read_subtitles_file(subtitles_file))
-
-#     # output_folder = "audios"
-#     # os.makedirs(output_folder, exist_ok=True)  # Create the "audios" folder if it doesn't exist
-
-#     # for idx, phrase in enumerate(phrases, 1):
-#     #     phrase_text = " ".join(phrase[1:])
-#     #     audio_filename = os.path.join(output_folder, f"{idx}.wav")
-#     #     synthesize_audio(phrase_text, audio_filename)
-
-#     combined_audio = combine_audio_files(phrases)
-#     combined_audio.export("Temp_files/combined_audio.wav", format="wav")
-
-# if __name__ == "__main__":
-#     main()
+def speed_up_audio_in_folder(folder_path, speedup_percentage):
+    # Check if the folder exists
+    if not os.path.exists(folder_path):
+        print(f"Folder '{folder_path}' does not exist.")
+        return
+    
+    # Iterate through all files in the folder
+    for filename in os.listdir(folder_path):
+        if filename.endswith(".mp3") or filename.endswith(".wav"):
+            file_path = os.path.join(folder_path, filename)
+            
+            # Load the audio file
+            audio = AudioSegment.from_file(file_path)
+            
+            # Calculate the new playback speed
+            new_speed = 1.0 + (speedup_percentage / 100)
+            
+            # Speed up the audio
+            sped_up_audio = audio.speedup(playback_speed=new_speed)
+            
+            # Save the sped-up audio to a new file
+            output_filename = os.path.splitext(filename)[0] + f".wav"
+            output_path = os.path.join(folder_path, output_filename)
+            sped_up_audio.export(output_path, format="wav")
+            print(f"Saved '{output_filename}'")
