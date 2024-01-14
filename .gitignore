@@ -3,4 +3,5 @@ splited_video/*
 Output/*
 Input/*
 audios/*
+model.pth
 __pycache__
