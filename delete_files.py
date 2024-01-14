@@ -15,4 +15,4 @@ def delete_temp_files():
                 os.remove(file_path)
 
 
-# delete_temp_files()
+delete_temp_files()

@@ -11,6 +11,5 @@ def normalize_subs(subs_file):
 
     # Filter out lines that don't have the "Default" style
     subs.events = [line for line in subs.events if line.style == 'Default']
-
     subs.remove_miscellaneous_events()
     subs.save("Temp_files/norm_subs.srt")

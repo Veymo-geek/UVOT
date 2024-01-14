@@ -10,3 +10,4 @@ pip install torch==2.1.2
 pip install ffmpeg-python
 pip install PyDeepLX
 pip install git+https://github.com/abdeladim-s/subsai
+pip install gradio
