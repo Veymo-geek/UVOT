@@ -12,7 +12,7 @@ from transcribe_audio import transcribe_audio
 
 import time
 
-input_video = "Input/Video-to-Translate.mkv"
+input_video = "Input/Video-noSubs.mkv"
 
 
 start_time = time.time()
@@ -60,7 +60,7 @@ else:
     combine_2ch_audio()
 
 
-combine_all(input_video, "Output/result.mkv")
+combine_all(input_video, "Output/result-3.mkv")
 
 elapsed_time_4 = time.time() - start_time
 elapsed_time_full = time.time() - start_time_full

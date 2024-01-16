@@ -13,39 +13,39 @@ import time
 import gradio as gr
 
 def main(input_video):
-    # print(input_video)
-    # separate_video_audio_subs(input_video)
+    print(input_video)
+    separate_video_audio_subs(input_video)
 
-    # if find_file("ENG_Subs") is None:
-    #     transcribe_audio("splited_video/ENG_Audio.wav")
+    if find_file("ENG_Subs") is None:
+        transcribe_audio("splited_video/ENG_Audio.wav")
 
-    # normalize_subs(find_file("ENG_Subs"))
-    # translate_text("Temp_files/norm_subs.srt")
+    normalize_subs(find_file("ENG_Subs"))
+    translate_text("Temp_files/norm_subs.srt")
 
-    # audio = AudioSegment.from_file("splited_video/ENG_Audio.wav")
-    # num_channels = audio.channels
-    # start_time = time.time()
+    audio = AudioSegment.from_file("splited_video/ENG_Audio.wav")
+    num_channels = audio.channels
+    start_time = time.time()
 
-    # if num_channels == 6:
-    #     split_6ch_audio("splited_video/ENG_Audio.wav")
-    # elif num_channels == 2:
-    #     split_audio("splited_video/ENG_Audio.wav")
-    # else:
-    #     convert_to_2_channels("splited_video/ENG_Audio.wav", "splited_video/ENG_Audio_stereo.wav")
-    #     split_audio("splited_video/ENG_Audio_stereo.wav")
+    if num_channels == 6:
+        split_6ch_audio("splited_video/ENG_Audio.wav")
+    elif num_channels == 2:
+        split_audio("splited_video/ENG_Audio.wav")
+    else:
+        convert_to_2_channels("splited_video/ENG_Audio.wav", "splited_video/ENG_Audio_stereo.wav")
+        split_audio("splited_video/ENG_Audio_stereo.wav")
 
-    # generate_audio_fragments("Temp_files/subs_uk.srt")
-    # speed_up_audio_in_folder("audios", 15)
-    # combine_audio_fragments("Temp_files/subs_uk.srt")
-    # adjust_audio_volume("Temp_files/combined_audio.wav", "Temp_files/Vocal.wav")
+    generate_audio_fragments("Temp_files/subs_uk.srt")
+    speed_up_audio_in_folder("audios", 15)
+    combine_audio_fragments("Temp_files/subs_uk.srt")
+    adjust_audio_volume("Temp_files/combined_audio.wav", "Temp_files/Vocal.wav")
 
-    # if num_channels == 6:
-    #     make_3ch("Temp_files/vocals_adjusted.wav", "Temp_files/combined_audio.wav", "Temp_files/result_audio.wav")
-    #     combine_6ch_audio("splited_video/ENG_Audio.wav", "Temp_files/3_channel.wav", "Temp_files/result_audio.wav")
-    # else:
-    #     combine_2ch_audio()
+    if num_channels == 6:
+        make_3ch("Temp_files/vocals_adjusted.wav", "Temp_files/combined_audio.wav", "Temp_files/result_audio.wav")
+        combine_6ch_audio("splited_video/ENG_Audio.wav", "Temp_files/3_channel.wav", "Temp_files/result_audio.wav")
+    else:
+        combine_2ch_audio()
 
-    # combine_all(input_video, "Output/result.mkv")
+    combine_all(input_video, "Output/result.mkv")
     return "Output/result.mkv"
 
 # Create a Gradio interface
