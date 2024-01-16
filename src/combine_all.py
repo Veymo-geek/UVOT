@@ -14,7 +14,7 @@ def combine_all(input_video, result_name):
 
     # Convert the WAV audio to the same format as the first audio stream
     audio_conversion_command = [
-        'ffmpeg', '-i', 'Temp_files/result_audio.wav',
+        'ffmpeg', '-y', '-i', 'Temp_files/result_audio.wav',
         '-c:a', input_audio_format,
         'Temp_files/result_audio.' + input_audio_format
     ]
@@ -22,7 +22,7 @@ def combine_all(input_video, result_name):
 
     # Combine video and new audio
     combine_command = [
-        'ffmpeg', '-i', input_video,
+        'ffmpeg', '-y', '-i', input_video,
         '-i', 'Temp_files/result_audio.' + input_audio_format, '-map', '0:v', '-map', '1:a',
         '-c:v', 'copy', '-c:a', input_audio_format, result_name
     ]
@@ -31,7 +31,7 @@ def combine_all(input_video, result_name):
 def combine_2ch_audio():
     # Combine audio files
     command = [
-        'ffmpeg', '-i', 'Temp_files/combined_audio.wav',
+        'ffmpeg', '-y', '-i', 'Temp_files/combined_audio.wav',
         '-i', 'Temp_files/Instrumental.wav',
         '-i', 'Temp_files/vocals_adjusted.wav',
         '-filter_complex', '[0:a][1:a][2:a]amix=inputs=3:duration=longest',
@@ -42,7 +42,7 @@ def combine_2ch_audio():
 def make_3ch(vocals_adjusted, combined_audio):
     # Combine audio files
     command = [
-        'ffmpeg', '-i', vocals_adjusted,
+        'ffmpeg', '-y', '-i', vocals_adjusted,
         '-i', combined_audio,
         '-filter_complex', '[0:a][1:a]amix=inputs=2:duration=longest',
         'Temp_files/3_channel.wav'
