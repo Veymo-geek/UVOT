@@ -5,4 +5,5 @@ Input/*
 audios/*
 flagged
 model.pth
+src/fonemizer.py
 __pycache__

@@ -1,14 +1,15 @@
-from split_audio import split_audio, convert_to_2_channels, split_6ch_audio
-from normalize_subs import normalize_subs
-from separate_video_audio_subs import separate_video_audio_subs
-from tts import generate_audio_fragments, combine_audio_fragments, speed_up_audio_in_folder
-from combine_all import combine_all, combine_6ch_audio, combine_2ch_audio, make_3ch
-from adjust_audio_volume import adjust_audio_volume
-from translate_text import translate_text
+from src.split_audio import split_audio, convert_to_2_channels, split_6ch_audio
+from src.normalize_subs import normalize_subs
+from src.separate_video_audio_subs import separate_video_audio_subs
+from src.tts import generate_audio_fragments, combine_audio_fragments, speed_up_audio_in_folder
+from src.combine_all import combine_all, combine_6ch_audio, combine_2ch_audio, make_3ch
+from src.adjust_audio_volume import adjust_audio_volume
+from src.translate_text import translate_text
+from src.delete_files import delete_temp_files
+from src.find_files import find_file
+from src.transcribe_audio import transcribe_audio
+
 from pydub import AudioSegment
-from delete_files import delete_temp_files
-from find_files import find_file
-from transcribe_audio import transcribe_audio
 import time
 import gradio as gr
 
@@ -40,7 +41,7 @@ def main(input_video):
     adjust_audio_volume("Temp_files/combined_audio.wav", "Temp_files/Vocal.wav")
 
     if num_channels == 6:
-        make_3ch("Temp_files/vocals_adjusted.wav", "Temp_files/combined_audio.wav", "Temp_files/result_audio.wav")
+        make_3ch("Temp_files/vocals_adjusted.wav", "Temp_files/combined_audio.wav")
         combine_6ch_audio("splited_video/ENG_Audio.wav", "Temp_files/3_channel.wav", "Temp_files/result_audio.wav")
     else:
         combine_2ch_audio()
@@ -48,10 +49,13 @@ def main(input_video):
     combine_all(input_video, "Output/result.mkv")
     return "Output/result.mkv"
 
+def test(file):
+    print(file)
+
 # Create a Gradio interface
 iface = gr.Interface(
     fn=main,
-    inputs=gr.inputs.File(label="Select Video"),
+    inputs=gr.Textbox(placeholder="Path, like D:\Files\Video.mp4", label="Input video path"),
     outputs="video",
     live=False,
     title="UVOT - Ukrainian Voice Over Tool",

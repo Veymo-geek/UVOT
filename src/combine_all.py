@@ -39,13 +39,13 @@ def combine_2ch_audio():
     ]
     subprocess.run(command, check=True)
 
-def make_3ch(vocals_adjusted, combined_audio):
+def make_3ch(vocals_adjusted, combined_audio, result='Temp_files/3_channel.wav'):
     # Combine audio files
     command = [
         'ffmpeg', '-y', '-i', vocals_adjusted,
         '-i', combined_audio,
         '-filter_complex', '[0:a][1:a]amix=inputs=2:duration=longest',
-        'Temp_files/3_channel.wav'
+        result
     ]
     subprocess.run(command, check=True)
 
