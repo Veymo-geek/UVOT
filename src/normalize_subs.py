@@ -38,6 +38,3 @@ def json_to_srt(file_path):
 
     # Save the subtitles as an SRT file
     subs.save("Input/output.srt", encoding="utf-8")
-
-# Example usage
-json_to_srt("Input/output.json")

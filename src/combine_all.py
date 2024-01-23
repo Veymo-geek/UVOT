@@ -11,11 +11,13 @@ def get_first_audio_format(input_video):
 def combine_all(input_video, result_name):
     # Get the format of the first audio stream in the input video
     input_audio_format = get_first_audio_format(input_video)
-
+    codec = input_audio_format
+    if codec == "opus":
+        codec = "libopus" 
     # Convert the WAV audio to the same format as the first audio stream
     audio_conversion_command = [
         'ffmpeg', '-y', '-i', 'Temp_files/result_audio.wav',
-        '-c:a', input_audio_format,
+        '-c:a', codec,
         'Temp_files/result_audio.' + input_audio_format
     ]
     subprocess.run(audio_conversion_command, check=True)
@@ -24,7 +26,7 @@ def combine_all(input_video, result_name):
     combine_command = [
         'ffmpeg', '-y', '-i', input_video,
         '-i', 'Temp_files/result_audio.' + input_audio_format, '-map', '0:v', '-map', '1:a',
-        '-c:v', 'copy', '-c:a', input_audio_format, result_name
+        '-c:v', 'copy', '-c:a', codec, result_name
     ]
     subprocess.run(combine_command, check=True)
 

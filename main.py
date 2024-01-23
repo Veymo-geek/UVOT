@@ -8,14 +8,19 @@ from src.translate_text import translate_text
 from src.delete_files import delete_temp_files
 from src.find_files import find_file
 from src.transcribe_audio import transcribe_audio
+from src.youtube_download import download_youtube_video
 
 from pydub import AudioSegment
 import time
 import gradio as gr
+import os
+import re
 
 def main(input_video):
-    print(input_video)
-    separate_video_audio_subs(input_video)
+    if os.path.isfile(input_video) and input_video.endswith(('.mp4', '.mkv')):
+        separate_video_audio_subs(input_video)
+    else:
+        download_youtube_video(input_video)
 
     if find_file("ENG_Subs") is None:
         transcribe_audio("splited_video/ENG_Audio.wav")
@@ -46,16 +51,16 @@ def main(input_video):
     else:
         combine_2ch_audio()
 
-    combine_all(input_video, "Output/result.mkv")
+    if os.path.isfile(input_video) and input_video.endswith(('.mp4', '.mkv')):
+        combine_all(input_video, "Output/result.mkv")
+    else:
+        combine_all("Input/YT_Video.mp4", "Output/result.mkv")
     return "Output/result.mkv"
-
-def test(file):
-    print(file)
 
 # Create a Gradio interface
 iface = gr.Interface(
     fn=main,
-    inputs=gr.Textbox(placeholder="Path, like D:\Files\Video.mp4", label="Input video path"),
+    inputs=gr.Textbox(placeholder="Path, like D:\\Video.mp4, or link", label="Input video path or Youtube link"),
     outputs="video",
     live=False,
     title="UVOT - Ukrainian Voice Over Tool",
@@ -69,7 +74,8 @@ iface.launch(share=True)
 
 
 # переклад з Deepl
-# відео з різних джерел get_video()
-# перевірити формати при рендері
-# побажання: Синтез голосами оригіналу
+# відео з різних джерел get_video() +
+# перевірити формати при рендері +
+
+# побажання: Синтез голосами оригіналу 
 # Для цього що треба субтитри всюди на ass змінити
