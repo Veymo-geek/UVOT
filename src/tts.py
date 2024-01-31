@@ -1,5 +1,4 @@
 from ukrainian_tts.tts import TTS, Voices, Stress
-import IPython.display as ipd
 from pydub import AudioSegment
 from pydub import silence
 import os

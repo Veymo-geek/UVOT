@@ -110,6 +110,6 @@ def process_subtitles(subs):
 
     return filtered_subs
 
-subs = pysubs2.load('Temp_files/norm_subs_wwww2.srt')
-processed_subs = process_subtitles(subs)
-processed_subs.save('Temp_files/norm_subs_wwww3.srt')
+# subs = pysubs2.load('Temp_files/norm_subs_wwww2.srt')
+# processed_subs = process_subtitles(subs)
+# processed_subs.save('Temp_files/norm_subs_wwww3.srt')

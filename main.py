@@ -17,6 +17,8 @@ import os
 import re
 
 def main(input_video):
+    start_time_full = time.time()
+
     if os.path.isfile(input_video) and input_video.endswith(('.mp4', '.mkv')):
         separate_video_audio_subs(input_video)
     else:
@@ -55,6 +57,8 @@ def main(input_video):
         combine_all(input_video, "Output/result.mkv")
     else:
         combine_all("Input/YT_Video.mp4", "Output/result.mkv")
+    elapsed_time_full = time.time() - start_time_full
+    print(f"Full time: {elapsed_time_full} seconds")
     return "Output/result.mkv"
 
 # Create a Gradio interface
@@ -64,18 +68,10 @@ iface = gr.Interface(
     outputs="video",
     live=False,
     title="UVOT - Ukrainian Voice Over Tool",
-    description="Для перекладу завантажте відео",
-    show_flag=False
+    description="Для перекладу завантажте відео"
 )
 
 iface.launch(share=True)
 
 # delete_temp_files()
 
-
-# переклад з Deepl
-# відео з різних джерел get_video() +
-# перевірити формати при рендері +
-
-# побажання: Синтез голосами оригіналу 
-# Для цього що треба субтитри всюди на ass змінити

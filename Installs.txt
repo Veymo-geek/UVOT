@@ -11,3 +11,4 @@ pip install ffmpeg-python
 pip install PyDeepLX
 pip install git+https://github.com/abdeladim-s/subsai
 pip install gradio
+pip install yt-dlp
