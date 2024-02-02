@@ -1,7 +1,11 @@
 import ffmpeg
 import subprocess
 from pydub import AudioSegment
+import os
 
+
+if not os.path.exists("Output"):
+    os.makedirs("Output")   
 
 def get_first_audio_format(input_video):
     # Use ffprobe to get the format of the first audio stream in the input video

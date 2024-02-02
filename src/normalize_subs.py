@@ -1,6 +1,10 @@
 import json
 import pysubs2
 import re
+import os
+
+if not os.path.exists("Temp_files"):
+    os.makedirs("Temp_files")   
 
 def normalize_subs(subs_file):
     subs = pysubs2.load(subs_file)

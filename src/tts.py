@@ -3,11 +3,16 @@ from pydub import AudioSegment
 from pydub import silence
 import os
 import re
+import torch
 
-
+def check_device():
+    if torch.cuda.is_available():
+        return "cuda"
+    else:
+        return "cpu"
 
 # subtitles_file = "Temp_files/ukr_orig.srt" #@param {type:"string"}
-tts = TTS(device="cpu") # can try gpu, mps
+tts = TTS(device=check_device()) # can try gpu, mps
 
 
 def synthesize_audio(text, output_filename):

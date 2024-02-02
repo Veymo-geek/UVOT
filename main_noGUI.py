@@ -8,17 +8,22 @@ from src.translate_text import translate_text
 from src.delete_files import delete_temp_files
 from src.find_files import find_file
 from src.transcribe_audio import transcribe_audio
+from src.youtube_download import download_youtube_video
 
 from pydub import AudioSegment
 import time
+import os
+import re
 
-input_video = "Input/Video-to-Translate.mkv"
-
+input_video = "https://www.youtube.com/watch?v=sweRL93xNcA&ab_channel=fireflyworlds"
 
 start_time = time.time()
 start_time_full = time.time()
 
-separate_video_audio_subs(input_video)
+if os.path.isfile(input_video) and input_video.endswith(('.mp4', '.mkv')):
+    separate_video_audio_subs(input_video)
+else:
+    download_youtube_video(input_video)
 
 if find_file("ENG_Subs") == None :
     transcribe_audio("splited_video/ENG_Audio.wav")
@@ -37,10 +42,10 @@ start_time = time.time()
 if num_channels == 6:
     split_6ch_audio("splited_video/ENG_Audio.wav")
 elif num_channels == 2:
-    split_audio("splited_video/ENG_Audio.wav")  
+    split_audio("splited_video/ENG_Audio.wav")
 else:
     convert_to_2_channels("splited_video/ENG_Audio.wav", "splited_video/ENG_Audio_stereo.wav")
-    split_audio("splited_video/ENG_Audio_stereo.wav")  
+    split_audio("splited_video/ENG_Audio_stereo.wav") 
 
 elapsed_time_2 = time.time() - start_time
 start_time = time.time()
@@ -59,9 +64,11 @@ if num_channels == 6:
 else:
     combine_2ch_audio()
 
-
-combine_all(input_video, "Output/result-3.mkv")
-
+if os.path.isfile(input_video) and input_video.endswith(('.mp4', '.mkv')):
+    combine_all(input_video, "Output/result.mkv")
+else:
+    combine_all("Input/YT_Video.mp4", "Output/result.mp4")
+  
 elapsed_time_4 = time.time() - start_time
 elapsed_time_full = time.time() - start_time_full
 
