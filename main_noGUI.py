@@ -15,7 +15,7 @@ import time
 import os
 import re
 
-input_video = "https://www.youtube.com/watch?v=sweRL93xNcA&ab_channel=fireflyworlds"
+input_video = "Input/Video-noSubs.mkv"
 
 start_time = time.time()
 start_time_full = time.time()
