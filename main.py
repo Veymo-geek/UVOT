@@ -9,6 +9,7 @@ from src.delete_files import delete_temp_files
 from src.find_files import find_file
 from src.transcribe_audio import transcribe_audio
 from src.youtube_download import download_youtube_video
+from src.custom_subs import move_subtitles
 
 from pydub import AudioSegment
 import time
@@ -16,7 +17,7 @@ import gradio as gr
 import os
 import re
 
-def main(input_video):
+def main(input_video, custom_eng_subs=None, custom_ukr_subs=None):
     start_time_full = time.time()
 
     if os.path.isfile(input_video) and input_video.endswith(('.mp4', '.mkv')):
@@ -24,11 +25,18 @@ def main(input_video):
     else:
         download_youtube_video(input_video)
 
-    if find_file("ENG_Subs") is None:
-        transcribe_audio("splited_video/ENG_Audio.wav")
+    move_subtitles(custom_eng_subs, "splited_video/ENG_Subs.srt")
+    move_subtitles(custom_ukr_subs, "splited_video/UKR_Subs.srt")
 
-    normalize_subs(find_file("ENG_Subs"))
-    translate_text("Temp_files/norm_subs.srt")
+    if find_file("UKR_Subs") is None:
+        if find_file("ENG_Subs") is None:
+            transcribe_audio("splited_video/ENG_Audio.wav")
+
+        normalize_subs(find_file("ENG_Subs"))
+        translate_text("Temp_files/norm_subs.srt")
+    else:
+        normalize_subs(find_file("UKR_Subs"))
+        move_subtitles("Temp_files/norm_subs.srt", "Temp_files/subs_uk.srt")
 
     audio = AudioSegment.from_file("splited_video/ENG_Audio.wav")
     num_channels = audio.channels
@@ -59,16 +67,21 @@ def main(input_video):
         combine_all("Input/YT_Video.mp4", "Output/result.mkv")
     elapsed_time_full = time.time() - start_time_full
     print(f"Full time: {elapsed_time_full} seconds")
+    delete_temp_files()
     return "Output/result.mkv"
 
 # Create a Gradio interface
 iface = gr.Interface(
     fn=main,
-    inputs=gr.Textbox(placeholder="Path, like D:\\Video.mp4, or link", label="Input video path or Youtube link"),
+    inputs=[
+        gr.Textbox(placeholder="Наприклад, D:/video.mp4 або youtu.be/AbcDEFGhIJ0", label="Шлях до відео або посилання на Youtube"),
+        gr.Textbox(placeholder="Наприклад, D:/eng_subs.srt", label="Шлях до субтитрів англійською (якщо є)"),
+        gr.Textbox(placeholder="Наприклад, D:/ukr_subs.srt", label="Шлях до субтитрів українською (якщо є)"),
+    ],
     outputs="video",
     live=False,
     title="UVOT - Ukrainian Voice Over Tool",
-    description="Для перекладу завантажте відео"
+    description="Вкажіть шлях або посилання на відео англійською і слухайте його українською!"
 )
 
 iface.launch(share=True)

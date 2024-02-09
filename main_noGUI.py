@@ -9,35 +9,47 @@ from src.delete_files import delete_temp_files
 from src.find_files import find_file
 from src.transcribe_audio import transcribe_audio
 from src.youtube_download import download_youtube_video
+from src.custom_subs import move_subtitles
 
 from pydub import AudioSegment
 import time
 import os
 import re
 
-input_video = "Input/Video-noSubs.mkv"
-
-start_time = time.time()
-start_time_full = time.time()
+input_video = "Input/Video-to-Translate.mkv"
+custom_eng_subs = None
+custom_ukr_subs = None
 
 if os.path.isfile(input_video) and input_video.endswith(('.mp4', '.mkv')):
     separate_video_audio_subs(input_video)
 else:
     download_youtube_video(input_video)
 
-if find_file("ENG_Subs") == None :
-    transcribe_audio("splited_video/ENG_Audio.wav")
+start_time = time.time()
+start_time_full = time.time()
+stt_time = 0
 
-normalize_subs(find_file("ENG_Subs"))
-translate_text("Temp_files/norm_subs.srt")
+move_subtitles(custom_eng_subs, "splited_video/ENG_Subs.srt")
+move_subtitles(custom_ukr_subs, "splited_video/UKR_Subs.srt")
+
+if find_file("UKR_Subs") is None:
+    if find_file("ENG_Subs") is None:
+        transcribe_audio("splited_video/ENG_Audio.wav")
+        stt_time = time.time() - start_time
+        start_time = time.time()
+
+    normalize_subs(find_file("ENG_Subs"))
+    translate_text("Temp_files/norm_subs.srt")
+else:
+    normalize_subs(find_file("UKR_Subs"))
+    move_subtitles("Temp_files/norm_subs.srt", "Temp_files/subs_uk.srt")
 
 elapsed_time_1 = time.time() - start_time
-
+start_time = time.time()
 
 # Check the number of audio channels
 audio = AudioSegment.from_file("splited_video/ENG_Audio.wav")
 num_channels = audio.channels
-start_time = time.time()
 
 if num_channels == 6:
     split_6ch_audio("splited_video/ENG_Audio.wav")
@@ -72,13 +84,14 @@ else:
 elapsed_time_4 = time.time() - start_time
 elapsed_time_full = time.time() - start_time_full
 
-print(f"1 stage time: {elapsed_time_1} seconds")
+print(f"stt time: {stt_time} seconds")
+print(f"translate time: {elapsed_time_1} seconds")
 print(f"split audio time: {elapsed_time_2} seconds")
 print(f"speech creation time: {elapsed_time_3} seconds")
 print(f"Final stage time: {elapsed_time_4} seconds")
 print(f"Full time: {elapsed_time_full} seconds")
 
-# delete_temp_files()
+delete_temp_files()
 
 # запуск у colab
 # переклад з Deepl

@@ -8,20 +8,26 @@ def separate_video_audio_subs(input_file):
         print('Error:', e.stderr)
         return
 
+    audio_streams = [stream for stream in probe['streams'] if stream['codec_type'] == 'audio']
+    
     largest_eng_sub = None
     largest_ukr_sub = None
 
     for stream in probe['streams']:
-        # Check if the stream is audio and in English
-        if stream['codec_type'] == 'audio' and stream['tags'].get('language') == 'eng':
-            ffmpeg.input(input_file).output('splited_video/ENG_Audio.wav', map=f"0:{stream['index']}").run(overwrite_output=True)
+        if len(audio_streams) == 1:
+            # If there is only one audio stream, save it as ENG_Audio.wav
+            ffmpeg.input(input_file).output('splited_video/ENG_Audio.wav').run(overwrite_output=True)   
+        else:
+            # Check if the stream is audio and in English
+            if stream['codec_type'] == 'audio' and stream['tags'].get('language') == 'eng':
+                ffmpeg.input(input_file).output('splited_video/ENG_Audio.wav', map=f"0:{stream['index']}").run(overwrite_output=True)
 
-        # Check if the stream is audio and in Ukrainian
-        elif stream['codec_type'] == 'audio' and stream['tags'].get('language') == 'ukr':
-            ffmpeg.input(input_file).output('splited_video/UKR_Audio.wav', map=f"0:{stream['index']}").run(overwrite_output=True)
+            # Check if the stream is audio and in Ukrainian
+            elif stream['codec_type'] == 'audio' and stream['tags'].get('language') == 'ukr':
+                ffmpeg.input(input_file).output('splited_video/UKR_Audio.wav', map=f"0:{stream['index']}").run(overwrite_output=True)
 
         # Check if the stream is a subtitle and in English or Ukrainian
-        elif stream['codec_type'] == 'subtitle':
+        if stream['codec_type'] == 'subtitle':
             lang = stream['tags'].get('language')
             if lang in ['eng', 'ukr']:
                 # Determine subtitle format
