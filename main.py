@@ -1,15 +1,15 @@
-from split_audio import split_audio, convert_to_2_channels, split_6ch_audio
-from normalize_subs import normalize_subs
-from separate_video_audio_subs import separate_video_audio_subs
-from tts import generate_audio_fragments, combine_audio_fragments, speed_up_audio_in_folder
-from combine_all import combine_all, combine_6ch_audio, combine_2ch_audio, make_3ch
-from adjust_audio_volume import adjust_audio_volume
-from translate_text import translate_text
-from delete_files import delete_temp_files
-from find_files import find_file
-from transcribe_audio import transcribe_audio
-from youtube_download import download_youtube_video
-from custom_subs import move_subtitles
+from uvot.split_audio import split_audio, convert_to_2_channels, split_6ch_audio
+from uvot.normalize_subs import normalize_subs
+from uvot.separate_video_audio_subs import separate_video_audio_subs
+from uvot.tts import generate_audio_fragments, combine_audio_fragments, speed_up_audio_in_folder
+from uvot.combine_all import combine_all, combine_6ch_audio, combine_2ch_audio, make_3ch
+from uvot.adjust_audio_volume import adjust_audio_volume
+from uvot.translate_text import translate_text
+from uvot.delete_files import delete_temp_files
+from uvot.find_files import find_file
+from uvot.transcribe_audio import transcribe_audio
+from uvot.youtube_download import download_youtube_video
+from uvot.custom_subs import move_subtitles
 
 from pydub import AudioSegment
 import time
