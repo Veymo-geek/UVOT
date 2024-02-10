@@ -1,15 +1,15 @@
-from src.split_audio import split_audio, convert_to_2_channels, split_6ch_audio
-from src.normalize_subs import normalize_subs
-from src.separate_video_audio_subs import separate_video_audio_subs
-from src.tts import generate_audio_fragments, combine_audio_fragments, speed_up_audio_in_folder
-from src.combine_all import combine_all, combine_6ch_audio, combine_2ch_audio, make_3ch
-from src.adjust_audio_volume import adjust_audio_volume
-from src.translate_text import translate_text
-from src.delete_files import delete_temp_files
-from src.find_files import find_file
-from src.transcribe_audio import transcribe_audio
-from src.youtube_download import download_youtube_video
-from src.custom_subs import move_subtitles
+from split_audio import split_audio, convert_to_2_channels, split_6ch_audio
+from normalize_subs import normalize_subs
+from separate_video_audio_subs import separate_video_audio_subs
+from tts import generate_audio_fragments, combine_audio_fragments, speed_up_audio_in_folder
+from combine_all import combine_all, combine_6ch_audio, combine_2ch_audio, make_3ch
+from adjust_audio_volume import adjust_audio_volume
+from translate_text import translate_text
+from delete_files import delete_temp_files
+from find_files import find_file
+from transcribe_audio import transcribe_audio
+from youtube_download import download_youtube_video
+from custom_subs import move_subtitles
 
 from pydub import AudioSegment
 import time
