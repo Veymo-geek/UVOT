@@ -67,7 +67,7 @@ def main(input_video, custom_eng_subs=None, custom_ukr_subs=None):
         combine_all("Input/YT_Video.mp4", "Output/result.mp4")
     elapsed_time_full = time.time() - start_time_full
     print(f"Full time: {elapsed_time_full} seconds")
-    # delete_temp_files()
+    delete_temp_files()
     return "Output/result.mp4"
 
 # Create a Gradio interface
