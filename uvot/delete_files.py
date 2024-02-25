@@ -14,5 +14,8 @@ def delete_temp_files():
             if os.path.isfile(file_path):
                 os.remove(file_path)
 
+    input_video_path = os.path.join("Input", "YT_Video.mp4")
+    if os.path.exists(input_video_path):
+        os.remove(input_video_path)
 
 # delete_temp_files()

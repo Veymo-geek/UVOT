@@ -64,11 +64,11 @@ def main(input_video, custom_eng_subs=None, custom_ukr_subs=None):
     if os.path.isfile(input_video) and input_video.endswith(('.mp4', '.mkv')):
         combine_all(input_video, "Output/result.mkv")
     else:
-        combine_all("Input/YT_Video.mp4", "Output/result.mkv")
+        combine_all("Input/YT_Video.mp4", "Output/result.mp4")
     elapsed_time_full = time.time() - start_time_full
     print(f"Full time: {elapsed_time_full} seconds")
-    delete_temp_files()
-    return "Output/result.mkv"
+    # delete_temp_files()
+    return "Output/result.mp4"
 
 # Create a Gradio interface
 iface = gr.Interface(
@@ -86,5 +86,4 @@ iface = gr.Interface(
 
 iface.launch(share=True)
 
-# delete_temp_files()
 
